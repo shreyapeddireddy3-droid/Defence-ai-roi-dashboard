@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Defence AI ROI Dashboard</title>
 
     <style>
@@ -41,7 +42,6 @@
         }
 
         .card h2 {
-            margin: 10px 0;
             font-size: 28px;
         }
 
@@ -56,7 +56,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
         }
 
         th, td {
@@ -73,9 +72,27 @@
             font-weight: bold;
         }
 
+        input {
+            padding: 8px;
+            width: 120px;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #1f2937;
+            color: white;
+        }
+
         @media (max-width: 700px) {
             .cards {
                 grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 13px;
             }
         }
     </style>
@@ -94,17 +111,17 @@
 
         <div class="card">
             <h3>Total Investment</h3>
-            <h2>₹38 Lakhs</h2>
+            <h2 id="totalInvestment">₹0</h2>
         </div>
 
         <div class="card">
             <h3>Total Benefit</h3>
-            <h2>₹69 Lakhs</h2>
+            <h2 id="totalBenefit">₹0</h2>
         </div>
 
         <div class="card">
             <h3>Overall ROI</h3>
-            <h2>81.6%</h2>
+            <h2 id="overallROI">0%</h2>
         </div>
 
     </div>
@@ -115,39 +132,98 @@
 
         <table>
 
-            <tr>
-                <th>Project</th>
-                <th>Investment</th>
-                <th>Benefit</th>
-                <th>ROI</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Investment (₹ Lakhs)</th>
+                    <th>Benefit (₹ Lakhs)</th>
+                    <th>ROI</th>
+                </tr>
+            </thead>
 
-            <tr>
-                <td>Predictive Maintenance</td>
-                <td>₹10 Lakhs</td>
-                <td>₹18 Lakhs</td>
-                <td class="roi">80%</td>
-            </tr>
+            <tbody id="projectTable">
 
-            <tr>
-                <td>Surveillance AI</td>
-                <td>₹20 Lakhs</td>
-                <td>₹35 Lakhs</td>
-                <td class="roi">75%</td>
-            </tr>
+                <tr>
+                    <td>Predictive Maintenance</td>
+                    <td><input type="number" value="10" class="investment"></td>
+                    <td><input type="number" value="18" class="benefit"></td>
+                    <td class="roi">0%</td>
+                </tr>
 
-            <tr>
-                <td>Logistics Optimization</td>
-                <td>₹8 Lakhs</td>
-                <td>₹16 Lakhs</td>
-                <td class="roi">100%</td>
-            </tr>
+                <tr>
+                    <td>Surveillance AI</td>
+                    <td><input type="number" value="20" class="investment"></td>
+                    <td><input type="number" value="35" class="benefit"></td>
+                    <td class="roi">0%</td>
+                </tr>
+
+                <tr>
+                    <td>Logistics Optimization</td>
+                    <td><input type="number" value="8" class="investment"></td>
+                    <td><input type="number" value="16" class="benefit"></td>
+                    <td class="roi">0%</td>
+                </tr>
+
+            </tbody>
 
         </table>
+
+        <br>
+
+        <button onclick="calculateROI()">Calculate ROI</button>
 
     </div>
 
 </div>
+
+<script>
+
+function calculateROI() {
+
+    const investments = document.querySelectorAll(".investment");
+    const benefits = document.querySelectorAll(".benefit");
+    const roiCells = document.querySelectorAll(".roi");
+
+    let totalInvestment = 0;
+    let totalBenefit = 0;
+
+    for (let i = 0; i < investments.length; i++) {
+
+        const investment = Number(investments[i].value);
+        const benefit = Number(benefits[i].value);
+
+        totalInvestment += investment;
+        totalBenefit += benefit;
+
+        let roi = 0;
+
+        if (investment > 0) {
+            roi = ((benefit - investment) / investment) * 100;
+        }
+
+        roiCells[i].textContent = roi.toFixed(1) + "%";
+    }
+
+    let overallROI = 0;
+
+    if (totalInvestment > 0) {
+        overallROI =
+            ((totalBenefit - totalInvestment) / totalInvestment) * 100;
+    }
+
+    document.getElementById("totalInvestment").textContent =
+        "₹" + totalInvestment.toFixed(1) + " Lakhs";
+
+    document.getElementById("totalBenefit").textContent =
+        "₹" + totalBenefit.toFixed(1) + " Lakhs";
+
+    document.getElementById("overallROI").textContent =
+        overallROI.toFixed(1) + "%";
+}
+
+calculateROI();
+
+</script>
 
 </body>
 </html>
