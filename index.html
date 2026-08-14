@@ -224,6 +224,62 @@ function calculateROI() {
 calculateROI();
 
 </script>
+    <h2>ROI by Defence AI Project</h2>
+
+<div style="max-width: 900px; margin: 30px auto;">
+    <canvas id="roiChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const projects = [
+    "Predictive Maintenance",
+    "Surveillance AI",
+    "Logistics Optimization"
+];
+
+const investments = [18, 20, 8];
+const benefits = [20, 35, 16];
+
+const roiValues = investments.map((investment, index) => {
+    return ((benefits[index] - investment) / investment * 100).toFixed(1);
+});
+
+new Chart(document.getElementById("roiChart"), {
+    type: "bar",
+
+    data: {
+        labels: projects,
+
+        datasets: [{
+            label: "ROI (%)",
+            data: roiValues
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "ROI (%)"
+                }
+            },
+
+            x: {
+                title: {
+                    display: true,
+                    text: "Defence AI Projects"
+                }
+            }
+        }
+    }
+});
+</script>
 
 </body>
 </html>
