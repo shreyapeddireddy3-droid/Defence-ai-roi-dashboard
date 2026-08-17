@@ -318,13 +318,23 @@ const projects = [
     "Logistics Optimization"
 ];
 
-const investments = [18, 20, 8];
-const benefits = [20, 35, 16];
+const investmentInputs = document.querySelectorAll(".investment");
+const benefitInputs = document.querySelectorAll(".benefit");
+
+const investments = Array.from(investmentInputs).map(input =>
+    Number(input.value)
+);
+
+const benefits = Array.from(benefitInputs).map(input =>
+    Number(input.value)
+);
 
 const roiValues = investments.map((investment, index) => {
-    return ((benefits[index] - investment) / investment * 100).toFixed(1);
+    if (investment > 0) {
+        return ((benefits[index] - investment) / investment * 100).toFixed(1);
+    }
+    return 0;
 });
-
 new Chart(document.getElementById("roiChart"), {
     type: "bar",
 
